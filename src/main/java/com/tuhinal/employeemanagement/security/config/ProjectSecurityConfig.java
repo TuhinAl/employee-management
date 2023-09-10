@@ -45,7 +45,7 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests((requests) ->
                         requests.requestMatchers("/api/register", "/api/login").permitAll()
 //                                .anyRequest().authenticated()
-                                .requestMatchers("/employee/**").permitAll())
+                                .requestMatchers("/employee/**").authenticated())
 //                .exceptionHandling(e -> e.authenticationEntryPoint(unAuthorizedUserAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .authenticationProvider(authenticationProvider())
