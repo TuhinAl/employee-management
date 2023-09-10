@@ -2,6 +2,7 @@ package com.tuhinal.employeemanagement.security.config;
 
 import com.tuhinal.employeemanagement.security.filter.SecurityFilter;
 import com.tuhinal.employeemanagement.security.filter.UnAuthorizedUserAuthenticationEntryPoint;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +21,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+//@RequiredArgsConstructor
 public class ProjectSecurityConfig {
     
-    @Autowired private UserDetailsService userDetailsService;
-    @Autowired private UnAuthorizedUserAuthenticationEntryPoint unAuthorizedUserAuthenticationEntryPoint;
+ /*   private final UserDetailsService userDetailsService;
+    private final UnAuthorizedUserAuthenticationEntryPoint unAuthorizedUserAuthenticationEntryPoint;*/
     @Autowired private SecurityFilter securityFilter;
     
+/*
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -33,6 +36,24 @@ public class ProjectSecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+*/
+
+    
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((requests) ->
+                        requests.requestMatchers("/api/register", "/api/login").permitAll()
+//                                .anyRequest().authenticated()
+                                .requestMatchers("/employee/**").permitAll())
+//                .exceptionHandling(e -> e.authenticationEntryPoint(unAuthorizedUserAuthenticationEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+        
+    }
+    
     
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,22 +62,7 @@ public class ProjectSecurityConfig {
     
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration
-                                                                   authenticationConfiguration) throws Exception {
+                                                               authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-    
-    @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(co -> co.disable())
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((requests) ->
-                        requests.requestMatchers("/api/register").permitAll()
-                                .anyRequest().authenticated())
-                .exceptionHandling(e -> e.authenticationEntryPoint(unAuthorizedUserAuthenticationEntryPoint))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
-        
-        return http.build();
     }
 }

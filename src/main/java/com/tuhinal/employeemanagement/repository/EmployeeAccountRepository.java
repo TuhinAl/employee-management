@@ -13,6 +13,7 @@ public interface EmployeeAccountRepository
     
     Optional<EmployeeAccount> findByUsername(String username);
     
+    EmployeeAccount findFirstByUsername(String username);
     Boolean existsByUsername(String username);
     
     Boolean existsByEmail(String email);

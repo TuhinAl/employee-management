@@ -2,22 +2,26 @@ package com.tuhinal.employeemanagement.service;
 
 
 import com.tuhinal.employeemanagement.dto.EmployeeAccountDto;
-import com.tuhinal.employeemanagement.security.filter.JwtUtil;
-import com.tuhinal.employeemanagement.security.jwt.UserRequest;
-import com.tuhinal.employeemanagement.security.jwt.UserResponse;
 import com.tuhinal.employeemanagement.entity.EmployeeAccount;
 import com.tuhinal.employeemanagement.entity.Role;
 import com.tuhinal.employeemanagement.enums.EmployeeRole;
 import com.tuhinal.employeemanagement.repository.EmployeeAccountRepository;
 import com.tuhinal.employeemanagement.repository.EmployeeInfoRepository;
 import com.tuhinal.employeemanagement.repository.RoleRepository;
+import com.tuhinal.employeemanagement.security.config.UserDetailsServiceImpl;
+import com.tuhinal.employeemanagement.security.filter.JwtUtil;
+import com.tuhinal.employeemanagement.security.jwt.UserRequest;
+import com.tuhinal.employeemanagement.security.jwt.UserResponse;
 import com.tuhinal.employeemanagement.util.IdGeneratorService;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,17 +33,16 @@ import static com.tuhinal.employeemanagement.util.TransformUtil.copyProp;
 
 
 @Service
-@RequiredArgsConstructor
 public class EmployeeAccountService {
     
-    private final EmployeeAccountRepository employeeAccountRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final IdGeneratorService idGeneratorService;
-    private final EmployeeInfoRepository employeeInfoRepository;
-    private final RoleRepository roleRepository;
-    private final JwtUtil jwtUtil;
-    private final AuthenticationManager authenticationManager;
-    
+    @Autowired private EmployeeAccountRepository employeeAccountRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private IdGeneratorService idGeneratorService;
+    @Autowired private EmployeeInfoRepository employeeInfoRepository;
+    @Autowired private RoleRepository roleRepository;
+    @Autowired private JwtUtil jwtUtil;
+    @Autowired private AuthenticationManager authenticationManager;
+    @Autowired private UserDetailsServiceImpl userDetailsServiceImpl;
     
     
     @Transactional
@@ -91,7 +94,7 @@ public class EmployeeAccountService {
         var employeeInfo = copyProp(employeeAccountDto, EmployeeAccount.class);
 //        employeeInfo.setDob(LocalDate.now());
 //        employeeInfo.setEmployeeNcId(idGeneratorService.empIdGenerator());
-             employeeAccountRepository.save(employeeInfo);
+        employeeAccountRepository.save(employeeAccount);
         
         /*employeeAccount.setRoles(roles);
         employeeAccount.setEnabled(Boolean.TRUE);
@@ -103,17 +106,17 @@ public class EmployeeAccountService {
     @Transactional
     public ResponseEntity<UserResponse> login(UserRequest userRequest) {
         
-        
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRequest.getUsername(),
-                userRequest.getPassword()));
-        String token = "";
-        if (authentication.isAuthenticated()) {
-             token = jwtUtil.generateJwtToken(userRequest.getUsername());
-        }
-       
-        
-        ResponseEntity<UserResponse> responseEntity = ResponseEntity.ok(new UserResponse(token, "Login Successful"));
-        return responseEntity;
+  
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(userRequest.getUsername(),
+                            userRequest.getPassword());
+             authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+        final UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userRequest.getUsername());
+        final String token = jwtUtil.generateToken(userDetails.getUsername());
+    
+    
+        return ResponseEntity.ok(new UserResponse(token, "Login Successful"));
     }
     
 /*    @Transactional
