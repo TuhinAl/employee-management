@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 
 @RestController
 @RequestMapping(path = "/api")
@@ -29,7 +31,7 @@ public class EmployeeAccountController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> login(@RequestBody UserRequest userRequest) throws IOException {
         return employeeAccountService.login(userRequest);
     }
     
