@@ -41,11 +41,13 @@ public class ProjectSecurityConfig {
     
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .cors(cors->cors.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) ->
                         requests.requestMatchers("/api/register", "/api/login").permitAll()
 //                                .anyRequest().authenticated()
-                                .requestMatchers("/employee/**").authenticated())
+                                .requestMatchers("/employee/address").authenticated())
 //                .exceptionHandling(e -> e.authenticationEntryPoint(unAuthorizedUserAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .authenticationProvider(authenticationProvider())
