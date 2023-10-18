@@ -1,0 +1,7 @@
+ TDD lifecycle:
+=================
+
+1. Red: Write unit test that fails
+2. Green: Write Application code to make unit test pass
+3. Refactor: Clean-up Improve unit test and application code
+4. Repeat: Repeat above step until all you functionality.
