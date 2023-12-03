@@ -35,16 +35,17 @@ import static com.tuhinal.employeemanagement.util.TransformUtil.copyProp;
 
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeAccountService {
     
-    @Autowired private EmployeeAccountRepository employeeAccountRepository;
-    @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private IdGeneratorService idGeneratorService;
-    @Autowired private EmployeeInfoRepository employeeInfoRepository;
-    @Autowired private RoleRepository roleRepository;
-    @Autowired private JwtUtil jwtUtil;
-    @Autowired private AuthenticationManager authenticationManager;
-    @Autowired private UserDetailsServiceImpl userDetailsServiceImpl;
+    private final EmployeeAccountRepository employeeAccountRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final IdGeneratorService idGeneratorService;
+    private final EmployeeInfoRepository employeeInfoRepository;
+    private final RoleRepository roleRepository;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
     
     
     @Transactional
@@ -117,7 +118,7 @@ public class EmployeeAccountService {
             throw new BadCredentialsException("Incorrect username or password!");
         }
         final UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userRequest.getUsername());
-        final String token = jwtUtil.generateToken(userDetails.getUsername());
+        final String token = jwtUtil.generateToken(userDetails);
     
     
         return ResponseEntity.ok(new UserResponse(token, "Login Successful"));

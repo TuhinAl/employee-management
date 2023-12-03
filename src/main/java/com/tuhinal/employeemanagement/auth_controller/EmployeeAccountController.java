@@ -1,4 +1,4 @@
-package com.tuhinal.employeemanagement.controller;
+package com.tuhinal.employeemanagement.auth_controller;
 
 
 import com.tuhinal.employeemanagement.dto.EmployeeAccountDto;

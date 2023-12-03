@@ -1,4 +1,4 @@
-package com.tuhinal.employeemanagement.service.tdd;
+package com.tuhinal.employeemanagement.service.tdd.model;
 
 import lombok.Getter;
 

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,8 +21,9 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
     
     private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
-    
+//    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsService UserDetailsService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -29,16 +31,16 @@ public class SecurityFilter extends OncePerRequestFilter {
         
         //step-1: get auth header
         String authHeader = request.getHeader("Authorization");
-        String token = null;
+        String jwt = null;
         String username = null;
         if (null != authHeader && authHeader.startsWith("Bearer ")) {
-            
-            token = authHeader.substring(7);
-            username = jwtUtil.extractUsername(token);
+            jwt = authHeader.substring(7);
+            username = jwtUtil.extractUsername(jwt);
         }
         if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
-            if (jwtUtil.validateToken(token, userDetails)) {
+//            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
+            UserDetails userDetails = this.UserDetailsService.loadUserByUsername(username);
+            if (jwtUtil.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

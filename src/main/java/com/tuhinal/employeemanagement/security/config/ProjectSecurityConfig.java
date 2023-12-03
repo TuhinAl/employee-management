@@ -21,24 +21,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class ProjectSecurityConfig {
-    
- /*   private final UserDetailsService userDetailsService;
-    private final UnAuthorizedUserAuthenticationEntryPoint unAuthorizedUserAuthenticationEntryPoint;*/
-    @Autowired private SecurityFilter securityFilter;
-    
-/*
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-*/
 
-    
+     private final SecurityFilter securityFilter;
+    private final AuthenticationProvider authenticationProvider;
+    private final UserDetailsService userDetailsService;
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -46,11 +35,9 @@ public class ProjectSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) ->
                         requests.requestMatchers("/api/register", "/api/login").permitAll()
-//                                .anyRequest().authenticated()
-                                .requestMatchers("/employee/address").authenticated())
-//                .exceptionHandling(e -> e.authenticationEntryPoint(unAuthorizedUserAuthenticationEntryPoint))
+                                .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
         
@@ -67,4 +54,14 @@ public class ProjectSecurityConfig {
                                                                authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+
 }

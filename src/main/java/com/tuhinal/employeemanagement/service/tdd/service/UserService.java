@@ -1,6 +1,6 @@
 package com.tuhinal.employeemanagement.service.tdd.service;
 
-import com.tuhinal.employeemanagement.service.tdd.User;
+import com.tuhinal.employeemanagement.service.tdd.model.User;
 
 public interface UserService {
     User createUser(String id,
