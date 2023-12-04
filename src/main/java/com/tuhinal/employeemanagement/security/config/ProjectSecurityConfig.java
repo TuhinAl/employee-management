@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class ProjectSecurityConfig {
 
      private final SecurityFilter securityFilter;
-    private final AuthenticationProvider authenticationProvider;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -34,10 +33,10 @@ public class ProjectSecurityConfig {
                 .cors(cors->cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) ->
-                        requests.requestMatchers("/api/register", "/api/login").permitAll()
+                        requests.requestMatchers("/api/register/**", "/api/login/**").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
         

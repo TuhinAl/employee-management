@@ -63,7 +63,7 @@ public class EmployeeAccountService {
                 employeeAccountDto.getEmail(),
                 passwordEncoder.encode(employeeAccountDto.getPassword()));
         
-        Set<String> strRoles = employeeAccountDto.getRole();
+       /* Set<String> strRoles = employeeAccountDto.getRole();
         Set<Role> roles = new HashSet<>();
         
         if (strRoles == null) {
@@ -91,7 +91,7 @@ public class EmployeeAccountService {
                         roles.add(userRole);
                 }
             });
-        }
+        }*/
         
         
         var employeeInfo = copyProp(employeeAccountDto, EmployeeAccount.class);

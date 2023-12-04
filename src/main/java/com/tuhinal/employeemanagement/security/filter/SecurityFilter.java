@@ -21,8 +21,7 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
     
     private final JwtUtil jwtUtil;
-//    private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final UserDetailsService UserDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,11 +34,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         String username = null;
         if (null != authHeader && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
+
             username = jwtUtil.extractUsername(jwt);
         }
         if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
 //            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
-            UserDetails userDetails = this.UserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(username);
             if (jwtUtil.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
