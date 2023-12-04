@@ -1,6 +1,9 @@
 package com.tuhinal.employeemanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +28,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class EmployeeAccountTransaction {
+public class EmployeeAccountTransaction extends Auditable{
     
     @Id
     @GeneratedValue(generator = "uuid")
@@ -37,12 +40,16 @@ public class EmployeeAccountTransaction {
     
     @Column(name = "transaction_time")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime transactionDateTime;
-    
-    @Column(name = "enabled", nullable = false)
-    protected Boolean enabled = true;
-    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_basic_info_id", nullable = false)
+    private EmployeeBasicInfo employeeBasicInfo;
+
+    @Column(name = "employee_basic_info_id", insertable = false, updatable = false)
+    private String employeeBasicInfoId;
+
     public EmployeeAccountTransaction(String id) {
         this.id = id;
     }

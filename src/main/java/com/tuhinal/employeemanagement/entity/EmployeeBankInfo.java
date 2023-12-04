@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class EmployeeBankInfo {
+public class EmployeeBankInfo extends Auditable{
     
     @Id
     @GeneratedValue(generator = "uuid")
@@ -37,12 +37,8 @@ public class EmployeeBankInfo {
     @Column(name = "account_number")
     private String accountNumber;
     
-    @Column(name = "current_balance")
-    private Double currentBalance;
-    
-    @Column(name = "enabled", nullable = false)
-    protected Boolean enabled = true;
-    
+    @Column(name = "current_salary")
+    private Double currentSalary;
     public EmployeeBankInfo(String id) {
         this.id = id;
     }

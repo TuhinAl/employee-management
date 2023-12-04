@@ -1,7 +1,7 @@
 package com.tuhinal.employeemanagement.controller;
 
 
-import com.tuhinal.employeemanagement.dto.EmployeeInfoDto;
+import com.tuhinal.employeemanagement.dto.EmployeeBasicInfoDto;
 import com.tuhinal.employeemanagement.service.EmployeeInfoService;
 import com.tuhinal.employeemanagement.util.ApiResponse;
 import com.tuhinal.employeemanagement.util.ApiResponseEntityFactory;
@@ -24,11 +24,11 @@ public class EmployeeInfoController {
     private final EmployeeInfoService employeeInfoService;
     
     @PostMapping()
-    public ResponseEntity<ApiResponse<EmployeeInfoDto>> save(@RequestBody EmployeeInfoDto employeeInfoDto) {
-        return responseFactory.saveResponse(employeeInfoService.save(employeeInfoDto));
+    public ResponseEntity<ApiResponse<EmployeeBasicInfoDto>> save(@RequestBody EmployeeBasicInfoDto employeeBasicInfoDto) {
+        return responseFactory.saveResponse(employeeInfoService.save(employeeBasicInfoDto));
     }
     @GetMapping()
-    public ResponseEntity<ApiResponse<EmployeeInfoDto>> getData() {
+    public ResponseEntity<ApiResponse<EmployeeBasicInfoDto>> getData() {
         return responseFactory.saveResponse("Your Data");
     }
     

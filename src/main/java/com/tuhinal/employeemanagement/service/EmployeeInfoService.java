@@ -1,9 +1,8 @@
 package com.tuhinal.employeemanagement.service;
 
 
-import com.tuhinal.employeemanagement.dto.EmployeeInfoDto;
-import com.tuhinal.employeemanagement.entity.EmployeeInfo;
-import com.tuhinal.employeemanagement.entity.QEmployeeInfo;
+import com.tuhinal.employeemanagement.dto.EmployeeBasicInfoDto;
+import com.tuhinal.employeemanagement.entity.EmployeeBasicInfo;
 import com.tuhinal.employeemanagement.repository.EmployeeInfoRepository;
 import com.tuhinal.employeemanagement.util.IdGeneratorService;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +22,13 @@ public class EmployeeInfoService {
     private final IdGeneratorService idGeneratorService;
     
     @Transactional
-    public EmployeeInfoDto save(EmployeeInfoDto employeeInfoDto) {
-        var employeeInfo = copyProp(employeeInfoDto, EmployeeInfo.class);
+    public EmployeeBasicInfoDto save(EmployeeBasicInfoDto employeeBasicInfoDto) {
+        var employeeInfo = copyProp(employeeBasicInfoDto, EmployeeBasicInfo.class);
 //        employeeInfo.setEnabled(Boolean.TRUE);
         employeeInfo.setDob(LocalDate.now());
 //        employeeInfo.setEmployeeNcId(idGeneratorService.employeeIdGenerator());
-        EmployeeInfo employeeInfoFromDb = employeeInfoRepository.save(employeeInfo);
-        return copyProp(employeeInfoFromDb, EmployeeInfoDto.class);
+        EmployeeBasicInfo employeeBasicInfoFromDb = employeeInfoRepository.save(employeeInfo);
+        return copyProp(employeeBasicInfoFromDb, EmployeeBasicInfoDto.class);
     }
 
 /*

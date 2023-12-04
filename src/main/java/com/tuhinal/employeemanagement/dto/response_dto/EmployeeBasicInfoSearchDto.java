@@ -1,10 +1,12 @@
-package com.tuhinal.employeemanagement.dto;
+package com.tuhinal.employeemanagement.dto.response_dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuhinal.employeemanagement.dto.EmployeeAccountDto;
+import com.tuhinal.employeemanagement.dto.EmployeeAccountTransactionDto;
+import com.tuhinal.employeemanagement.dto.EmployeeAttendanceDto;
+import com.tuhinal.employeemanagement.dto.EmployeeBankInfoDto;
+import com.tuhinal.employeemanagement.dto.SearchDto;
 import com.tuhinal.employeemanagement.enums.DesignationTypeEnum;
-import com.tuhinal.employeemanagement.enums.PaymentTypeEnum;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +15,9 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.time.LocalDate;
-
 
 
 @Setter
@@ -24,41 +26,27 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Accessors(chain = true)
-public class EmployeeInfoDto {
+public class EmployeeBasicInfoSearchDto extends SearchDto {
     
     private String id;
-    
     private String name;
-    
     private String employeeNcId;
     
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
-    
-    private String address;
-    
-    @Enumerated(EnumType.STRING)
-    private PaymentTypeEnum paymentTypeEnumKey;
-    
-    private String paymentTypeEnumValue;
-    
+
     @Enumerated(EnumType.STRING)
     private DesignationTypeEnum designationTypeEnumKey;
-    
     private String designationTypeEnumValue;
 
     private EmployeeAccountDto employeeAccountDto;
-    
     private EmployeeAccountTransactionDto employeeAccountTransactionDto;
-    
     private EmployeeAttendanceDto employeeAttendanceDto;
-
     private EmployeeBankInfoDto employeeBankInfoDto;
-    
     private Boolean enabled;
     
-    public EmployeeInfoDto(String id) {
+    public EmployeeBasicInfoSearchDto(String id) {
         this.id = id;
     }
 }

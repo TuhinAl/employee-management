@@ -2,12 +2,10 @@ package com.tuhinal.employeemanagement.util;
 
 
 import com.querydsl.jpa.impl.JPAQuery;
-import com.tuhinal.employeemanagement.entity.EmployeeAccount;
-import com.tuhinal.employeemanagement.entity.EmployeeInfo;
+import com.tuhinal.employeemanagement.entity.EmployeeBasicInfo;
 import com.tuhinal.employeemanagement.entity.QEmployeeInfo;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -46,11 +44,11 @@ public class IdGeneratorService {
             String year = localDate.format(DateTimeFormatter.ofPattern("yy"));
             String month = localDate.format(DateTimeFormatter.ofPattern("MM"));
             String prefixEmployeeId = "EMPO1" + "01" + year + month;
-            EmployeeInfo employeeInfo = this.empId(prefixEmployeeId);
+            EmployeeBasicInfo employeeBasicInfo = this.empId(prefixEmployeeId);
             String newEmpId;
-            if (null != employeeInfo) {
+            if (null != employeeBasicInfo) {
                 newEmpId = prefixEmployeeId + StringUtil
-                        .joinerStringLastPartIncrement(employeeInfo.getEmployeeNcId(), 6, 1);
+                        .joinerStringLastPartIncrement(employeeBasicInfo.getEmployeeNcId(), 6, 1);
             } else {
                 newEmpId = prefixEmployeeId + StringUtil.intToZeroAddedString(1, 6);
             }
@@ -58,10 +56,10 @@ public class IdGeneratorService {
         }
     }
     
-    public EmployeeInfo empId(String employeeNcId) {
+    public EmployeeBasicInfo empId(String employeeNcId) {
         synchronized (this) {
             final QEmployeeInfo qEmployeeInfo = QEmployeeInfo.employeeInfo;
-            final JPAQuery<EmployeeInfo> query = new JPAQuery<>(entityManager);
+            final JPAQuery<EmployeeBasicInfo> query = new JPAQuery<>(entityManager);
             return query.from(qEmployeeInfo)
                     .where(qEmployeeInfo.employeeNcId.like("%" + employeeNcId + "%"))
                     .orderBy(qEmployeeInfo.employeeNcId.desc())

@@ -1,6 +1,8 @@
 package com.tuhinal.employeemanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tuhinal.employeemanagement.entity.EmployeeBasicInfo;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,8 +29,10 @@ public class EmployeeAccountTransactionDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime transactionDateTime;
     
+    private EmployeeBasicInfoDto employeeBasicInfoDto;
+    private String employeeBasicInfoId;
     private Boolean enabled;
-    
+
     public EmployeeAccountTransactionDto(String id) {
         this.id = id;
     }
