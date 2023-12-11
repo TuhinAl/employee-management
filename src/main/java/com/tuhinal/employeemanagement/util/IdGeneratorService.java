@@ -3,7 +3,6 @@ package com.tuhinal.employeemanagement.util;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.tuhinal.employeemanagement.entity.EmployeeBasicInfo;
-import com.tuhinal.employeemanagement.entity.QEmployeeInfo;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class IdGeneratorService {
     
-    private final QEmployeeInfo qEmployeeInfo = QEmployeeInfo.employeeInfo;
+//    private final QEmployeeInfo qEmployeeInfo = QEmployeeInfo.employeeInfo;
     private final EntityManager entityManager;
     
    /* public String employeeIdGenerator() {
@@ -38,7 +37,7 @@ public class IdGeneratorService {
     }*/
     
     
-    public String empIdGenerator() {
+    /*public String empIdGenerator() {
         synchronized (this) {
             LocalDate localDate = LocalDate.now();
             String year = localDate.format(DateTimeFormatter.ofPattern("yy"));
@@ -54,9 +53,9 @@ public class IdGeneratorService {
             }
             return newEmpId;
         }
-    }
+    }*/
     
-    public EmployeeBasicInfo empId(String employeeNcId) {
+/*    public EmployeeBasicInfo empId(String employeeNcId) {
         synchronized (this) {
             final QEmployeeInfo qEmployeeInfo = QEmployeeInfo.employeeInfo;
             final JPAQuery<EmployeeBasicInfo> query = new JPAQuery<>(entityManager);
@@ -65,5 +64,5 @@ public class IdGeneratorService {
                     .orderBy(qEmployeeInfo.employeeNcId.desc())
                     .fetchFirst();
         }
-    }
+    }*/
 }

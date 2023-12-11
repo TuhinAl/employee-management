@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/employee-info")
 @Slf4j
 @AllArgsConstructor
-public class EmployeeInfoController {
+public class EmployeeBasicInfoController {
     
     private final ApiResponseEntityFactory responseFactory;
     private final EmployeeInfoService employeeInfoService;
