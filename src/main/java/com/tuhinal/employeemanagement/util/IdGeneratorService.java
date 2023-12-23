@@ -3,8 +3,10 @@ package com.tuhinal.employeemanagement.util;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.tuhinal.employeemanagement.entity.EmployeeBasicInfo;
+import com.tuhinal.employeemanagement.entity.QEmployeeBasicInfo;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,12 +16,12 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class IdGeneratorService {
     
-//    private final QEmployeeInfo qEmployeeInfo = QEmployeeInfo.employeeInfo;
+    private final QEmployeeBasicInfo qEmployeeBasicInfo = QEmployeeBasicInfo.employeeBasicInfo;
     private final EntityManager entityManager;
     
-   /* public String employeeIdGenerator() {
-        final JPAQuery<EmployeeInfo> jpaQuery = new JPAQuery<>(entityManager);
-        var employeeInfoList = jpaQuery.from(qEmployeeInfo).fetch();
+    public String employeeIdGenerator() {
+        final JPAQuery<EmployeeBasicInfo> jpaQuery = new JPAQuery<>(entityManager);
+        var employeeInfoList = jpaQuery.from(qEmployeeBasicInfo).fetch();
         return getFormattedId("EMP01", employeeInfoList.size());
     }
     
@@ -31,13 +33,12 @@ public class IdGeneratorService {
         return new StringBuilder(prefix)
                 .append(yearValue)
                 .append(monthValue)
-                .append(StringUtils
-                        .leftPad(String.valueOf(count + 1), 6, '0'))
+                .append(StringUtils.leftPad(String.valueOf(count + 1), 6, '0'))
                 .toString();
-    }*/
+    }
     
     
-    /*public String empIdGenerator() {
+    public String empIdGenerator() {
         synchronized (this) {
             LocalDate localDate = LocalDate.now();
             String year = localDate.format(DateTimeFormatter.ofPattern("yy"));
@@ -53,16 +54,16 @@ public class IdGeneratorService {
             }
             return newEmpId;
         }
-    }*/
+    }
     
-/*    public EmployeeBasicInfo empId(String employeeNcId) {
+    public EmployeeBasicInfo empId(String employeeNcId) {
         synchronized (this) {
-            final QEmployeeInfo qEmployeeInfo = QEmployeeInfo.employeeInfo;
+            final QEmployeeBasicInfo qEmployeeBasicInfo = QEmployeeBasicInfo.employeeBasicInfo;
             final JPAQuery<EmployeeBasicInfo> query = new JPAQuery<>(entityManager);
-            return query.from(qEmployeeInfo)
-                    .where(qEmployeeInfo.employeeNcId.like("%" + employeeNcId + "%"))
-                    .orderBy(qEmployeeInfo.employeeNcId.desc())
+            return query.from(qEmployeeBasicInfo)
+                    .where(qEmployeeBasicInfo.employeeNcId.like("%" + employeeNcId + "%"))
+                    .orderBy(qEmployeeBasicInfo.employeeNcId.desc())
                     .fetchFirst();
         }
-    }*/
+    }
 }

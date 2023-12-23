@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         User user = new User(UUID.randomUUID().toString(), firstName, lastName, email);
         boolean isUserCreated = userRepository.save(user);
         if (!isUserCreated) {
-            throw new IllegalArgumentException();
+            throw new UserServiceException("Could not create User.");
         }
         return user;
 

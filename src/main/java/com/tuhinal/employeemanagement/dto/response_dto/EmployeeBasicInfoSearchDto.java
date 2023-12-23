@@ -18,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Setter
@@ -28,10 +29,11 @@ import java.time.LocalDate;
 @Accessors(chain = true)
 public class EmployeeBasicInfoSearchDto extends SearchDto {
     
-    private String id;
+    private List<String> idList;
     private String name;
     private String employeeNcId;
-    
+    private String multiSearchProp;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
@@ -45,8 +47,5 @@ public class EmployeeBasicInfoSearchDto extends SearchDto {
     private EmployeeAttendanceDto employeeAttendanceDto;
     private EmployeeBankInfoDto employeeBankInfoDto;
     private Boolean enabled;
-    
-    public EmployeeBasicInfoSearchDto(String id) {
-        this.id = id;
-    }
+
 }

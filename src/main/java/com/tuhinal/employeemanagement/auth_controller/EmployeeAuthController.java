@@ -4,7 +4,7 @@ package com.tuhinal.employeemanagement.auth_controller;
 import com.tuhinal.employeemanagement.dto.EmployeeAccountDto;
 import com.tuhinal.employeemanagement.security.jwt.UserRequest;
 import com.tuhinal.employeemanagement.security.jwt.UserResponse;
-import com.tuhinal.employeemanagement.service.EmployeeAccountService;
+import com.tuhinal.employeemanagement.service.EmployeeAuthService;
 import com.tuhinal.employeemanagement.util.ApiResponseEntityFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +21,20 @@ import java.io.IOException;
 @RequestMapping(path = "/api")
 @CrossOrigin("http://localhost:4240")
 @AllArgsConstructor
-public class EmployeeAccountController {
+public class EmployeeAuthController {
     
     private final ApiResponseEntityFactory responseFactory;
-    private final EmployeeAccountService employeeAccountService;
+    private final EmployeeAuthService employeeAuthService;
     
     
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody EmployeeAccountDto employeeAccountDto) {
-        return responseFactory.saveResponse(employeeAccountService.register(employeeAccountDto));
+        return responseFactory.saveResponse(employeeAuthService.register(employeeAccountDto));
     }
     
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody UserRequest userRequest) throws IOException {
-        return employeeAccountService.login(userRequest);
+        return employeeAuthService.login(userRequest);
     }
     
  /*   @PostMapping("/logout")

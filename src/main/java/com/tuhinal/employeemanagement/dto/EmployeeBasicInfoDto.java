@@ -52,10 +52,10 @@ public class EmployeeBasicInfoDto {
     private String paymentTypeEnumValue;
     private Double currentSalary;
 
-    private EmployeeAccount employeeAccount;
+    private EmployeeAccountDto employeeAccountDto;
     private List<EmployeeAccountTransactionDto> employeeAccountTransactionDtoList;
-    private EmployeeAttendance employeeAttendance;
-    private EmployeeBankInfo employeeBankInfo;
+    private EmployeeAttendanceDto employeeAttendanceDto;
+    private EmployeeBankInfoDto employeeBankInfoDto;
     
     public EmployeeBasicInfoDto(String id) {
         this.id = id;

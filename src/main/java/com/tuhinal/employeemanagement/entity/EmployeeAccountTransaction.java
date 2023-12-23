@@ -35,8 +35,11 @@ public class EmployeeAccountTransaction extends Auditable{
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     
-    @Column(name = "transaction_nc_id")
-    private String transactionNcId;
+    @Column(name = "transaction_id")
+    private String transactionId;
+
+    @Column(name = "transaction_amount")
+    private Double transactionAmount;
     
     @Column(name = "transaction_time")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

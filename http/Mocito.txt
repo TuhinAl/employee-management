@@ -1,0 +1,186 @@
+Test Double Object: stand for a real object
+===================
+
+1. Mock Object
+2. Fake Object
+3. Spy Object
+4. Stub
+
+
+Junit 4.x annotations:
+======================
+
+    1. @RunWith: To execute group of Junit classes ar once
+    2. @BeforeClass: This annotation will loading (before executing all testcases) the Junit class.
+    3. @AfterClass: This annotation will unloading (before executing all testcases) the Junit class.
+    4. @Test: this annotation is used to execute the test case
+    5. @Before: Before executing every test case this annotation will be executed
+    6. @After: After executing every test case this annotation will be executed
+    7. @Ignore: Ignore the test case
+    11:42 lin second lecture: take screeen short
+
+
+    Before write unit testing we should follow the below recommendation:
+    ====================================================================
+    1. First tey to understand the source code of the project
+            a. what is the input
+            b. what is output
+            c. what is the business logic and what it does?
+
+    2. write as many as test case for each functionality
+        a. add functionality test cases
+            i. test both values are +ve number
+            ii. test both values are -ve number
+            iii. test one value is +ve and other value is -ve
+            iv. test with MAX value
+            v. test with MIN value
+
+
+
+    3. Test case status are 3
+        1. pass: expected output will match actual output, it will show as green color
+        2. fail: expected output will not match actual output, it will show as red color
+        3. error: no output, due to some code issues, it will exit in the middle of execution, no color will be displayed
+
+
+    4. EveryJunit class at least one @Test annotation is mandatory otherwise it will treat as normal class instead od junit class
+
+    5. Every test method at least 0 or more assertXXXX() method, so that output can be compared in more possible ways
+
+
+
+Today Session:
+=================
+
+    Q. what is code coverage?
+    Q. what tools are using for code coverage?
+    Q. How Much code coverage percentage is accepting by the most of the clients?
+
+    Code coverage:
+    =============
+    "Code coverage is the process of no of lines tested by the developer using Junit"
+
+   code coverage % = no of lines tested / total no of lines
+   code coverage % = 560/800 = 70%
+   Note***: Client expectations
+
+
+
+   To improve the coverage percentage we have to write more test case to convert the untested code to tested code.
+
+   In code coverage report we would have 2 types of coverage
+
+        1. Line Coverage: no of lines tested using junit
+        2. Branch Coverage: here branch means like conditional statement, hoe many conditions like if, if-else. while..
+                            all the possible conditions has been tested or not.
+
+
+How to implement Junit in out project:
+=======================================
+
+Generally Junit will apply for business class like controller, service,, validator, dao and service class, we dont write Junit
+for Beans?DTO/Model
+
+Mocking Framework:
+==================
+
+1. Introduction
+2. Software
+
+
+There are so many mocking framework like Mockito, PowerMockito, JMock, EasyMock and Spring Junit testing Mockito
+
+
+Mockito:
+========
+
+
+"The main goal of Mockito framework was without depending on external systems or
+backend system developers can test their code is working fine or not"
+
+
+
+Mockito Implementation steps:
+================================
+To implement any mocking framework, we should follow 3 steps
+    1. Stubbing: stubbing means mock, fake, dummy
+    2. Expectation
+    3. Verify
+
+
+        Class A{
+            private B b;
+            m1(){
+            b.m2();
+            }
+        }
+
+                Class B{
+
+                  //risky code
+                    m2(){
+
+                    }
+                }
+
+
+
+
+    1. Stubbing:
+            a) Without Annotation:
+             Class ref = Mockito.mock(ClassName.class)
+             Ex: B mockB= Mockito.mock(B.class);
+
+            b) With annotation
+                @Mock
+                B mockB:
+
+    Whenever we will mock sn object then the real object will become a dummy object or fake object.
+    2. Expectations: What are we expecting on a real object the same as we should expect on a mock object.
+                "When X call thenReturn Y"
+                Syntax: Mockito.when(mockObj.method()).thenReturn(returnMockResponse);
+                        Mockito.when(mockObj.method()).thenThrows(Exception object);
+                        Mockito.when(mockObj.method()).thenCallRealMethod();
+
+
+                Ex: Mockito.when(mockB.m2()).thenReturn(mockBResponse);
+
+    2. Verify:
+        Verify the result using verify() method or assertXXX() method
+
+
+        Note:
+        =====
+
+            1. In mocking frameworks, according to the test case requirement developer will prepare the request and also developer only will prepare
+                     the response object
+
+            2. Before calling backend mockito will stop backend calls and send mock response object
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,10 +3,8 @@ package com.tuhinal.employeemanagement.service;
 
 import com.tuhinal.employeemanagement.dto.EmployeeAccountDto;
 import com.tuhinal.employeemanagement.entity.EmployeeAccount;
-import com.tuhinal.employeemanagement.entity.Role;
-import com.tuhinal.employeemanagement.enums.EmployeeRole;
 import com.tuhinal.employeemanagement.repository.EmployeeAccountRepository;
-import com.tuhinal.employeemanagement.repository.EmployeeInfoRepository;
+import com.tuhinal.employeemanagement.repository.EmployeeBasicInfoRepository;
 import com.tuhinal.employeemanagement.repository.RoleRepository;
 import com.tuhinal.employeemanagement.security.config.UserDetailsServiceImpl;
 import com.tuhinal.employeemanagement.security.filter.JwtUtil;
@@ -15,7 +13,6 @@ import com.tuhinal.employeemanagement.security.jwt.UserResponse;
 import com.tuhinal.employeemanagement.util.IdGeneratorService;
 import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,20 +25,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.tuhinal.employeemanagement.util.TransformUtil.copyProp;
 
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeAccountService {
+public class EmployeeAuthService {
     
     private final EmployeeAccountRepository employeeAccountRepository;
     private final PasswordEncoder passwordEncoder;
     private final IdGeneratorService idGeneratorService;
-    private final EmployeeInfoRepository employeeInfoRepository;
+    private final EmployeeBasicInfoRepository employeeBasicInfoRepository;
     private final RoleRepository roleRepository;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
