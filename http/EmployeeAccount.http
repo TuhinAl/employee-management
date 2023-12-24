@@ -4,9 +4,9 @@ Content-Type: application/json
 
 {
   "id": "",
-  "email": "alauddintuhin1411@gmail.com",
-  "username": "tuhinal",
-  "password": "tuhinn00al",
+  "email": "eu.tuhin@gmail.com",
+  "username": "hridoy",
+  "password": "hridoy123",
   "role": ["user"],
   "enabled": true
 }
@@ -19,6 +19,6 @@ Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {
-  "username": "tuhinal",
-  "password": "tuhinn00al"
+  "username": "hridoy",
+  "password": "hridoy123"
 }

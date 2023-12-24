@@ -2,6 +2,7 @@ package com.tuhinal.employeemanagement.service;
 
 
 import com.tuhinal.employeemanagement.dto.EmployeeBasicInfoDto;
+import com.tuhinal.employeemanagement.dto.response_dto.EmailBodyDto;
 import com.tuhinal.employeemanagement.entity.EmployeeAccountTransaction;
 import com.tuhinal.employeemanagement.entity.EmployeeBasicInfo;
 import com.tuhinal.employeemanagement.repository.EmployeeAccountTransactionRepository;
@@ -21,7 +22,7 @@ import static com.tuhinal.employeemanagement.util.TransformUtil.copyProp;
 @RequiredArgsConstructor
 public class EmployeeSalaryDisburseService {
 
-  private final EmployeeBasicInfoRepository employeeBasicInfoRepository;
+  private final EmailService emailService;
   private final EmployeeAccountTransactionRepository employeeAccountTransactionRepository;
   private final EntityValidationService entityValidationService;
 
@@ -42,9 +43,15 @@ public class EmployeeSalaryDisburseService {
     employeeAccountTransaction.setTransactionId(txId);
     employeeAccountTransaction.setTransactionAmount(salary);
     employeeAccountTransaction.setTransactionDateTime(LocalDateTime.now());
-    employeeAccountTransactionRepository.save(employeeAccountTransaction);
-    EmployeeBasicInfo employeeBasicInfoFromDb = employeeBasicInfoRepository.save(employeeBasicInfo);
-    return copyProp(employeeBasicInfoFromDb, EmployeeBasicInfoDto.class);
+    EmployeeAccountTransaction transaction = employeeAccountTransactionRepository.save(employeeAccountTransaction);
+    EmailBodyDto emailBodyDto = new EmailBodyDto();
+    emailBodyDto.setToEmail(employeeBasicInfo.getEmployeeAccount().getEmail());
+    emailBodyDto.setEmployeeName(employeeBasicInfo.getFirstName() + " " + employeeBasicInfo.getLastName());
+    emailBodyDto.setCurrentSalary(transaction.getTransactionAmount());
+    emailBodyDto.setTransactionDate(transaction.getTransactionDateTime());
+    emailService.sendHtmlEmail(emailBodyDto);
+//    EmployeeBasicInfo employeeBasicInfoFromDb = employeeBasicInfoRepository.save(employeeBasicInfo);
+    return copyProp(employeeBasicInfoDto, EmployeeBasicInfoDto.class);
   }
 
   private Double salaryCalculation(EmployeeBasicInfo employeeBasicInfo) {
