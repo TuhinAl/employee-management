@@ -33,7 +33,8 @@ public class ProjectSecurityConfig {
                 .cors(cors->cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) ->
-                        requests.requestMatchers("/api/register/**", "/api/login/**").permitAll()
+                        requests.requestMatchers("/api/register/**", "/api/login/**",
+                            "/employee-basic-info/**","/employee-salary-disburse/**").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

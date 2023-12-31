@@ -36,14 +36,18 @@ public class EmployeeInfoService {
   @Transactional
   public EmployeeBasicInfoDto save(EmployeeBasicInfoDto employeeBasicInfoDto) {
     var employeeBasicInfo = copyProp(employeeBasicInfoDto, EmployeeBasicInfo.class);
-    if (StringUtils.isNotEmpty(employeeBasicInfoDto.getId())) {
-      employeeBasicInfo.setEmployeeAccount(new EmployeeAccount(employeeBasicInfoDto.getId()));
+    if (StringUtils.isNotEmpty(employeeBasicInfoDto.getEmployeeAccountDto().getId())) {
+      employeeBasicInfo.setEmployeeAccount(new EmployeeAccount(employeeBasicInfoDto
+        .getEmployeeAccountDto().getId()));
     }
     employeeBasicInfo.setEmployeeNcId(idGeneratorService.employeeIdGenerator());
 
     EmployeeBasicInfo employeeBasicInfoFromDb = employeeBasicInfoRepository.save(employeeBasicInfo);
     return copyProp(employeeBasicInfoFromDb, EmployeeBasicInfoDto.class);
   }
+
+
+
 
   public Page<EmployeeBasicInfoDto> search(EmployeeBasicInfoSearchDto employeeBasicInfoSearchDto) {
 
