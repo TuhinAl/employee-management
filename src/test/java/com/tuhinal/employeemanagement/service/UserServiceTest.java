@@ -2,8 +2,10 @@ package com.tuhinal.employeemanagement.service;
 
 import com.tuhinal.employeemanagement.service.tdd.model.User;
 import com.tuhinal.employeemanagement.service.tdd.repository.UserRepository;
+import com.tuhinal.employeemanagement.service.tdd.service.EmailVerificationServiceImpl;
 import com.tuhinal.employeemanagement.service.tdd.service.UserServiceException;
 import com.tuhinal.employeemanagement.service.tdd.service.UserServiceImpl;
+import com.tuhinal.employeemanagement.service.tdd.service.exception.EmailNotificationServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,9 @@ public class UserServiceTest {
     UserServiceImpl userService;
     @Mock //Mark a field as a mock.
     UserRepository userRepository;
+
+    @Mock
+    EmailVerificationServiceImpl emailVerificationService;
     String firstName;
     String lastName;
     String email;
@@ -35,7 +40,7 @@ public class UserServiceTest {
         firstName = "Alauddin";
         lastName = "Tuhin";
         email = "alauddintuhin1411@gmail.com";
-        password = null;
+        password = "12345678";
         repeatPassword = "12345678";
     }
 
@@ -89,4 +94,49 @@ public class UserServiceTest {
             userService.createUser(firstName, lastName, email, password, repeatPassword);
         }, "Should have thrown UserServiceException instead");
     }
+
+
+    //todo important
+    @DisplayName("Email Notification Method thrown Exception")
+    @Test
+    void testCreateUser_whenEmailNotificationThrowsException_thenThrowsUserServiceException() {
+
+        //Arrange
+        //when().thenReturn() and when().thenThrow() is not working with void method;
+        when(userRepository.save(any(User.class))).thenReturn(true);
+        doThrow(EmailNotificationServiceException.class)
+            .when(emailVerificationService)
+            .scheduleEmailConfirmation(any(User.class));
+
+        //todo doNothing().when()
+        //Act
+//        userService.createUser(firstName, lastName, email, password, repeatPassword);
+
+        //Act and Assert
+        assertThrows(UserServiceException.class, () -> {
+            userService.createUser(firstName, lastName, email, password, repeatPassword);
+        }, "Should have thrown UserServiceException instead");
+
+        //Assert
+        verify(emailVerificationService, times(1))
+            .scheduleEmailConfirmation(any(User.class));
+    }
+
+    //Call a real method
+    @DisplayName("Schedule Email Confirmation is Executed")
+    @Test
+    void testCreateUser_whenUserCreated_scheduleEmailConfirms() {
+        when(userRepository.save(any(User.class))).thenReturn(true);
+        doCallRealMethod()
+            .when(emailVerificationService)
+            .scheduleEmailConfirmation(any(User.class));
+
+        //Act
+        userService.createUser(firstName, lastName, email, password, repeatPassword);
+
+        //assert
+        verify(emailVerificationService, times(1))
+            .scheduleEmailConfirmation(any(User.class));
+    }
+
 }
