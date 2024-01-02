@@ -7,6 +7,8 @@ import com.tuhinal.employeemanagement.service.EmployeeInfoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,17 +28,14 @@ import static org.mockito.Mockito.when;
 excludeAutoConfiguration = {SecurityAutoConfiguration.class}
 )// only this bean will be placed in ApplicationContext
 //@AutoConfigureMockMvc(addFilters = false)
-@MockBean({EmployeeInfoService.class})//ekhane implementation class gula hbe
+//@MockBean({EmployeeInfoService.class})//ekhane implementation class gula hbe
 public class EmployeeBasicInfoControllerTest {
 
-    private final MockMvc mockMvc;
+    @Autowired MockMvc mockMvc;
 
-    private final EmployeeInfoService employeeInfoService; // and eta interface hbe,, ekhane 2ta way mone rakhte hbe(lecture-82, 2.30 minutes)
+    @MockBean EmployeeInfoService employeeInfoService; // and eta interface hbe,, ekhane 2ta way mone rakhte hbe(lecture-82, 2.30 minutes)
 
-    public EmployeeBasicInfoControllerTest(MockMvc mockMvc, EmployeeInfoService employeeInfoService) {
-        this.mockMvc = mockMvc;
-        this.employeeInfoService = employeeInfoService;
-    }
+
 
 /*  @PostMapping("/save-info")
   public ResponseEntity<ApiResponse<EmployeeBasicInfoDto>> save(@RequestBody EmployeeBasicInfoDto employeeBasicInfoDto) {
