@@ -164,7 +164,14 @@ To implement any mocking framework, we should follow 3 steps
 
 
 
-
+//====================================== Controller Test using Mockito ============================
+1. added dependency : spring-boot-starter-test, spring-boot-security-test dependency
+2. /test MainClassTest wll be annotated with @SpringBootTest and @Disabled annotation
+3. create Controller using @WebMvcTest so that Application context will create only these beans
+4. save() and searchMethod()
+5. Difference between @Mock and @MockBean
+            @Mock - create a Mock Object
+            @MockBean - create a Mock Object and automatically put this mock object in spring application Context.
 
 
 

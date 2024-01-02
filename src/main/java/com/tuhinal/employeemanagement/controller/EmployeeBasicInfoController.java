@@ -29,6 +29,11 @@ public class EmployeeBasicInfoController {
     return responseFactory.saveResponse(employeeInfoService.save(employeeBasicInfoDto));
   }
 
+  @PostMapping("/save-info-duplicate")
+  public EmployeeBasicInfoDto saveInfo(@RequestBody EmployeeBasicInfoDto employeeBasicInfoDto) {
+    return employeeInfoService.save(employeeBasicInfoDto);
+  }
+
   @PostMapping("/search")
   public ResponseEntity<ApiResponse<Page<EmployeeBasicInfoDto>>> search(@RequestBody EmployeeBasicInfoSearchDto
                                                                           employeeBasicInfoSearchDto) {
